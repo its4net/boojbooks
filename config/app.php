@@ -228,5 +228,5 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
+    'nytimes_api_key' => "iCarsVk30GGBe7quG4bo06rj5xigJvV3",
 ];
