@@ -1,4 +1,4 @@
-FROM php:7.4.3-apache-stretch
+FROM php:7.4.11-apache-buster
 
 LABEL maintainer="Kris Scheppe <kris@scheppe.us>" \
       version="1.0"
