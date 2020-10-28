@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use App\NyTimes\Books;
 
 class BookController extends Controller
 {
@@ -14,17 +15,9 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $books = Book::sortable()->get();
+        $suggestions = Books::getBestSellers();
+        return view('welcome',compact('books','suggestions'));
     }
 
     /**
@@ -35,7 +28,18 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'author' => 'required',
+            'published' => 'required'
+        ]);
+        
+        $book = new Book;
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->published = $request->published;        
+        $result = $book->save();
+        return redirect()->route('books.index');
     }
 
     /**
@@ -46,32 +50,9 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        //
+        return view('bookDetail',compact('book'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Book $book)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Book $book)
-    {
-        //
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -80,6 +61,7 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $book->delete();
+        return redirect()->route('books.index');
     }
 }

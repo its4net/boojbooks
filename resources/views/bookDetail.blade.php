@@ -9,9 +9,6 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.2/Sortable.min.js" integrity="sha512-ELgdXEUQM5x+vB2mycmnSCsiDZWQYXKwlzh9+p+Hff4f5LA+uf0w2pOp3j7UAuSAajxfEzmYZNOOLQuiotrt9Q==" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>
 
         <!-- Styles -->
         <style>
@@ -25,67 +22,12 @@
         </style>
     </head>
     <body class="antialiased">
-        <h1>Books To Read</h1>
-        <form class="form-inline" method="POST" action="{{route('books.store')}}">
-            @csrf
-            <label class="sr-only" for="title">Title</label>
-            <input type="text" class="form-control mb-2 mr-sm-2" id="title" required placeholder="Title" name="title">
-            <label class="sr-only" for="author">Author</label>
-            <input type="text" class="form-control mb-2 mr-sm-2" id="author" required placeholder="Author" name="author">
-            <label for="published">Published</label>
-            <input type="date" class="form-control mb-2 mr-sm-2" id="published" required placeholder="Published" name="published">
-            <button type="submit" class="btn btn-primary mb-2">
-                Add Book
-            </button>
-        </form>
-        @if (!empty($books))        
         <div class="row">
-            <div class="col-sm-4">
-                <strong>@sortablelink('title', 'Title')</strong>
-            </div>
-            <div class="col-sm-3">
-                <strong>@sortablelink('author', 'Author')</strong>
-            </div>
-            <div class="col-sm-3">
-                <strong>@sortablelink('published', 'Published Date')</strong>
-            </div>
-            <div class="col-sm-2">
-                <strong>REMOVE</strong>
-            </div>
+            <div class="col-sm-12">
+                <strong>Title:</strong>&nbsp;{{$book->title}}<br/>
+                <strong>Author:</strong>&nbsp;{{$book->author}}<br/>
+                <strong>Published:</strong>&nbsp;{{$book->published}}
+            </div>            
         </div>
-        <div id="book-list">
-            @foreach ($books as $book)
-            <div class="row">
-                <div class="col-sm-4">
-                    <a href="{{route('books.show',$book->id)}}">{{$book->title}}</a>
-                </div>
-                <div class="col-sm-3">
-                    {{$book->author}}
-                </div>
-                <div class="col-sm-3">
-                    {{$book->published}}
-                </div>
-                <div class="col-sm-2">
-                    <form id="delete" method="POST" action="{{route('books.destroy',$book->id)}}">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-link">Remove</button>
-                    </form>
-                </div>
-            </div>        
-            @endforeach
-        </div>
-        @else
-            <p>No books have been added yet.</p>
-        @endif
-        <h2>Suggestions</h2>
-            <ul>
-            @foreach ($suggestions as $suggestion)
-                <li><em>{{ $suggestion->title }}</em>&nbsp;by&nbsp;{{ $suggestion->author }}</li>
-            @endforeach
-            </ul>
-        <script>
-            $('#book-list').sortable();
-        </script>
     </body>
 </html>
